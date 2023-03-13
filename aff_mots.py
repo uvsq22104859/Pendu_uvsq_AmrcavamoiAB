@@ -21,12 +21,15 @@ def verify(lettre, mots):
         if mots[0] == mots[1]:
             fenetre.destroy()
     affiche_mot(mots)
+    score += 1
 
 def ver():
     q = saisie.get()
     verify(q, rep)
     saisie.delete(0,len(q))
 
+int score = 0;
+    
 fenetre =  tk.Tk()
 
 fenetre.geometry("900x600")
