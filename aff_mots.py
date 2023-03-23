@@ -1,5 +1,7 @@
 import tkinter as tk
+import random
 
+bank_mots = ["bonjour", "sensible", "montagne", "russe", "livre"]
 
 def def_mot(mots):
     aff = [[],[]]
@@ -21,28 +23,36 @@ def verify(lettre, mots):
         if mots[0] == mots[1]:
             fenetre.destroy()
     affiche_mot(mots)
-    score += 1
 
 def ver():
     q = saisie.get()
     verify(q, rep)
     saisie.delete(0,len(q))
 
-int score = 0;
-    
-fenetre =  tk.Tk()
+def maxone():
+    pass
+    if len(saisie.get()) < 1:
+        return True
+    else:
+        saisie.delete(0, len(saisie.get()))
+        return True
 
+fenetre =  tk.Tk()
 fenetre.geometry("900x600")
 
+#Widgets
 label = tk.Label(fenetre)
 bouton1  = tk.Button(fenetre, command = ver)
 
 rec = tk.StringVar
 
-saisie = tk.Entry(fenetre, textvariable = rec, take = 'focus')
+saisie = tk.Entry(fenetre, textvariable = rec, take = 'focus', validate = "key", validatecommand = maxone)
 
-rep = def_mot("bonjour")
+#Mots aléatoire
+index = random.randint(0, len(bank_mots)-1)
+rep = def_mot(bank_mots[index])
 affiche_mot(rep)
+#Positionnement
 label.grid(row = 0, column = 4)
 saisie.grid(row = 1, column = 3)
 bouton1.grid(row = 2, column = 5)
