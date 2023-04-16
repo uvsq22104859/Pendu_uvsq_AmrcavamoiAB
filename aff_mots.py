@@ -1,5 +1,7 @@
 import tkinter as tk
 import random
+from tkinter import messagebox
+import tkinter.font
 
 bank_mots = ["bonjour", "sensible", "montagne", "russe", "livre"]
 score = 0
@@ -16,7 +18,7 @@ def affiche_mot(liste):
     texte = ""
     for i in liste[0]:
         texte += i
-    label.config(text = texte)
+    label.config(text = texte, font = ("Helvetica",30))
 
 def verify(lettre, mots):
     for i in range(len(mots[1])):
@@ -25,16 +27,21 @@ def verify(lettre, mots):
         if mots[0] == mots[1]:
             fenetre.destroy()
             return
+        saisie.delete(0,len(saisie.get()))
     affiche_mot(mots)
 
 def ver():
     global score
-    if len(saisie.get()) > 1 :
-        saisie.delete(0,len(q))
+    nbr_lettre = len(saisie.get())
+    if nbr_lettre > 1 :
+        tk.messagebox.showinfo(title="Max elements 1", message="Vous ne pouvez entrer qu'une lettre a la fois.")
+        saisie.delete(0, nbr_lettre)
         return
     verify(saisie.get(), rep)
-    saisie.delete(0,len(saisie.get()))
     score += 1
+
+def SaveParti():
+    pass
 
 def indice():
     global score, nbr_indice_util
@@ -49,7 +56,6 @@ def indice():
 
 
 def maxone():
-    print(saisie.get())
     if len(saisie.get()) < 1:
         return True
     else:
@@ -60,7 +66,7 @@ fenetre =  tk.Tk()
 fenetre.geometry("900x600")
 
 #Widgets
-label = tk.Label(fenetre)
+label = tk.Label(fenetre, font=("Helvetica",30))
 bouton1  = tk.Button(fenetre, text="OK", command = ver)
 b_indice = tk.Button(fenetre, text = "indice", command = indice)
 
@@ -77,6 +83,16 @@ label.grid(row = 0, column = 4)
 saisie.grid(row = 1, column = 3)
 bouton1.grid(row = 2, column = 5)
 b_indice.grid(row=3, column=6)
+
+#Petite blague
+def closed():
+    if messagebox.askyesno("Essayez de trouver", "Voulez-vous vraiment nous quitter ?"):
+        if messagebox.askyesno("Sauvegarde", "Voulez vous sauvegarder la partie ?"):
+            SaveParti()
+            print("partie saved")
+        fenetre.destroy()
+
+fenetre.protocol("WM_DELETE_WINDOW", closed)
 
 fenetre.mainloop()
 print("score: ",score, "nomnre d'indices utiliser: ", nbr_indice_util)
