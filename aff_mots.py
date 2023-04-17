@@ -9,9 +9,18 @@ nbr_indice_util = 0
 fenetre = 0
 
 def jeu():
+    """
+    fenetre permetent de jouer 
+    oú sont definie les autres fonction pour jeu
+    """
     global bank_mots, score, nbr_indice_util, fenetre
     score = nbr_indice_util = 0
     def def_mot(mots):
+        """
+        enregistre le mot choisi dans un tableau a deux dimensions
+        dans la premiere ligne est enregistrer des "*" c'est cette ligne qui est afficher
+        et dans la seconde le mot a trouver
+        """
         aff = [[],[]]
         for i in mots:
             aff[1].append(i)
@@ -19,12 +28,19 @@ def jeu():
         return aff
 
     def affiche_mot(liste):
+        """
+        Permet de modifier le texte du label afiiche la premiere ligne de aff
+        """
         texte = ""
         for i in liste[0]:
             texte += i
         label.config(text = texte, font = ("Helvetica",30))
 
     def verify(lettre, mots):
+        """
+        verifie si la lettre donner par l'utilisateur est dans le mot
+        Et si le mot a ete trouver demande a l'utilisateur si il veut rejouer
+        """
         global fenetre
         for i in range(len(mots[1])):
             if lettre == mots[1][i]:
@@ -40,6 +56,10 @@ def jeu():
         affiche_mot(mots)
 
     def ver():
+        """
+        Verifie si l'utilisateur a bien mis une seule lettre
+        sinon affiche un message informatife rapelent qu'il faut mettre qu'une seule lettre 
+        """
         global score
         nbr_lettre = len(saisie.get())
         if nbr_lettre > 1 :
@@ -50,9 +70,15 @@ def jeu():
         score += 1
 
     def SaveParti():
+        """
+        Permet d'enregistrer la partie dans un fichier
+        """
         pass
 
     def indice():
+        """
+        Revele une lettre presente dans le mot pour aider l'utilisateur
+        """
         global score, nbr_indice_util
         lettre_indice = []
         for i in range(len(rep[1])):
@@ -65,6 +91,9 @@ def jeu():
 
 
     def maxone():
+        """
+        empeche de mettre plus d'une lettre 
+        """
         if len(saisie.get()) < 1:
             return True
         else:
@@ -96,6 +125,9 @@ def jeu():
 
     #Petite blague
     def closed():
+        """
+        Affiche un message pour etre sur que l'utilsateur veut qutter l'application
+        """
         if messagebox.askyesno("Essayez de trouver", "Voulez-vous vraiment nous quitter ?"):
             if messagebox.askyesno("Sauvegarde", "Voulez vous sauvegarder la partie ?"):
                 SaveParti()
@@ -107,6 +139,10 @@ def jeu():
     fenetre.mainloop()
 
 def start():
+    """
+    Fonction qui demare l'application et affiche les regle du jeu.
+    Renvoi vers la fonction jeu
+    """
     global fenetre
     def Ok():
         fenetre.destroy()
