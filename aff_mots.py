@@ -7,14 +7,14 @@ bank_mots = ["bonjour", "sensible", "montagne", "russe", "livre"]
 score = 0
 nbr_indice_util = 0
 fenetre = 0
+rep = ""
 
-def jeu():
+def jeu(new):
     """
     fenetre permetent de jouer 
     oú sont definie les autres fonction pour jeu
     """
-    global bank_mots, score, nbr_indice_util, fenetre
-    score = nbr_indice_util = 0
+    global bank_mots, score, nbr_indice_util, fenetre, rep
     def def_mot(mots):
         """
         enregistre le mot choisi dans un tableau a deux dimensions
@@ -48,7 +48,7 @@ def jeu():
             if mots[0] == mots[1]:
                 if tk.messagebox.askyesno(title="Fin de partie", message="Voulew vous refaire un partie?"):
                     fenetre.destroy()
-                    jeu()
+                    jeu(True)
                 else:
                     fenetre.destroy()
                 return
@@ -100,28 +100,33 @@ def jeu():
             saisie.delete(0, len(saisie.get()))
             return True
 
-
-    fenetre =  tk.Tk()
-    fenetre.geometry("900x600")
-
-    #Widgets
+    if(new):
+        score = nbr_indice_util = 0
+        fenetre =  tk.Tk()
+        fenetre.geometry("900x600")
+            #Mots aléatoire
+        index = random.randint(0, len(bank_mots)-1)
+        rep = def_mot(bank_mots[index])
+    else:
+        fenetre =  tk.Tk()
+        fenetre.geometry("900x600")
+    
+     #Widgets
     label = tk.Label(fenetre, font=("Helvetica",30))
     bouton1  = tk.Button(fenetre, text="OK", command = ver)
     b_indice = tk.Button(fenetre, text = "indice", command = indice)
+    b_Score = tk.Button(fenetre, text="Score", command=Tableau_score)
 
     rec = tk.StringVar
 
     saisie = tk.Entry(fenetre, textvariable = rec, take = 'focus', validate = "key", validatecommand = maxone)
 
-    #Mots aléatoire
-    index = random.randint(0, len(bank_mots)-1)
-    rep = def_mot(bank_mots[index])
-    affiche_mot(rep)
     #Positionnement
     label.grid(row = 0, column = 4)
     saisie.grid(row = 1, column = 3)
     bouton1.grid(row = 2, column = 5)
     b_indice.grid(row=3, column=6)
+    b_Score.grid(row=4, column=2)
 
     #Petite blague
     def closed():
@@ -132,7 +137,11 @@ def jeu():
             if messagebox.askyesno("Sauvegarde", "Voulez vous sauvegarder la partie ?"):
                 SaveParti()
                 print("partie saved")
-            fenetre.destroy()
+            fenetre.destroy()    
+    
+    affiche_mot(rep)
+
+   
 
     fenetre.protocol("WM_DELETE_WINDOW", closed)
 
@@ -146,13 +155,26 @@ def start():
     global fenetre
     def Ok():
         fenetre.destroy()
-        jeu()
+        jeu(True)
     fenetre = tk.Tk()
     fenetre.geometry("900x600")
     test = tk.Button(text="OK", command=Ok)
     test.pack()
     fenetre.mainloop()
     pass
+
+def Tableau_score():
+    """
+    Ouvre une fentre avec les score d'afficher
+    """
+    global fenetre
+    fenetre.destroy()
+    def retour():
+        fenetre.destroy()
+        jeu(False)
+    fenetre = tk.Tk()
+    fenetre.protocol("WM_DELETE_WINDOW", retour)
+    fenetre.mainloop()
 
 start()
 # fenetre.destroy()
