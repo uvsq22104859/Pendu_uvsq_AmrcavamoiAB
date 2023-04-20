@@ -5,9 +5,12 @@ import tkinter.font
 import os
 
 
-bank_mots = ["bonjour", "sensible", "montagne", "russe", "livre"]
+bank_mots = 0
 score = 0
 nbr_indice_util = 0
+max_erreur = 7
+taille_mots = 6
+nbr_erreur = 0
 fenetre = 0
 rep = ""
 
@@ -17,6 +20,7 @@ def jeu(new):
     oú sont definie les autres fonction pour jeu
     """
     global bank_mots, score, nbr_indice_util, fenetre, rep
+
     def def_mot(mots):
         """
         enregistre le mot choisi dans un tableau a deux dimensions
@@ -54,8 +58,9 @@ def jeu(new):
                     fenetre.destroy()
                     FinDePartie()
                 return
-            saisie.delete(0,len(saisie.get()))
         affiche_mot(mots)
+        if not in_word:
+            perdu
         return in_word
 
     def ver():
@@ -76,6 +81,7 @@ def jeu(new):
         for i in range(nbr_lettre):
             if mots[i] != rep[1][i]:
                 saisie.delete(0,len(mots))
+                perdu()
                 return
         if tk.messagebox.showinfo(title="Fin de partie", message="Voulez avez gagner"):
             fenetre.destroy()
@@ -90,10 +96,20 @@ def jeu(new):
             event.widget.config(bg="green")
         else:
             event.widget.config(bg="red")
+            perdu()
         score += 1
         msg = "Sore : " + str(score)
         l_score.config(text = msg)
 
+    def perdu():
+        global max_erreur, nbr_erreur
+        nbr_erreur += 1
+        if max_erreur == nbr_erreur:
+            if tk.messagebox.askyesno(title="You lose", message="Dommage vous avez perdu \nVouler vous faire une nouvelle partie?"):
+                fenetre.destroy()
+                jeu(True)
+            else:
+                fenetre.destroy()
 
     def indice():
         """
@@ -116,8 +132,14 @@ def jeu(new):
         fenetre =  tk.Tk()
         fenetre.geometry("900x600")
             #Mots aléatoire
-        index = random.randint(0, len(bank_mots)-1)
-        rep = def_mot(bank_mots[index])
+        with open("src/dictionnaire.txt", "r") as file:
+            bank_mots = file.read().split("\n")
+        for i in range(len(bank_mots)):
+            bank_mots[i] = bank_mots[i].split(";")
+        print(taille_mots)
+        print(bank_mots[taille_mots-1])
+        index = random.randint(0, len(bank_mots[taille_mots-1])-2)
+        rep = def_mot(bank_mots[taille_mots-1][index])
     else:
         fenetre =  tk.Tk()
         fenetre.geometry("900x600")
@@ -126,7 +148,6 @@ def jeu(new):
     label = tk.Label(fenetre, font=("Helvetica",30))
     bouton_Ok  = tk.Button(fenetre, text="OK", command = ver)
     b_indice = tk.Button(fenetre, text = "indice", command = indice)
-    b_Score = tk.Button(fenetre, text="Score", command=Tableau_score)
     l_score = tk.Label(fenetre, text = "Score : 0")
 
     rec = tk.StringVar
@@ -216,7 +237,6 @@ def jeu(new):
     saisie.grid(row = 1, column = 1, columnspan=6)
     bouton_Ok.grid(row = 1, column = 10)
     b_indice.grid(row=10, column=7)
-    b_Score.grid(row=10, column=10)
     l_score.grid(row = 12, column=20)
 
     #Positionnement lettres
@@ -271,19 +291,53 @@ def jeu(new):
 
 def start():
     """
-    Fonction qui demare l'application et affiche les regle du jeu.
+    Fonction qui demare l'application et affiche le menu.
     Renvoi vers la fonction jeu
     """
-    global fenetre
+    global fenetre, taille_mots
+    word_size = [3,4,5,6,7,8,9,10,11,12,13,14,15]
     def Ok():
+        global taille_mots
+        taille_mots = variable.get()
         fenetre.destroy()
         jeu(True)
+    
+    def addWord():
+        word = s_word.get()
+        s_word.delete(0,len(word))
+        list = []
+        with open("src/dictionnaire.txt", "r") as file:
+            list = file.read().split("\n")
+        for i in range(len(list)):
+            list[i] = list[i].split(";")
+        list[len(word)-1].append(word)
+        with open("src/dictionnaire.txt", "w") as file:
+            for i in range(len(list)):
+                for j in range(len(list[i])):
+                    if(list[i][j] != ""):
+                        file.write(list[i][j]+";")
+                file.write("\n")
+
+
     fenetre = tk.Tk()
     fenetre.geometry("900x600")
+    variable = tk.IntVar()
+    variable.set(word_size[3])
+    deroul = tk.OptionMenu(fenetre, variable, *word_size)
     test = tk.Button(text="OK", command=Ok)
-    test.pack()
+    b_taille = tk.Label(text="taille mots")
+    rec = tk.StringVar
+    s_word = tk.Entry(fenetre, textvariable=rec)
+    b_word = tk.Button(text="ajouter un mot", command=addWord)
+
+    test.grid(row=2, column=2)
+    deroul.grid(row=1, column=1)
+    b_taille.grid(row=1, column=2)
+    s_word.grid(row=1, column=10)
+    b_word.grid(row=1, column=11)
+
     fenetre.mainloop()
-    pass
+
 
 def Tableau_score():
     """
@@ -328,7 +382,7 @@ def FinDePartie():
         f.close()
         if tk.messagebox.askyesno(title="Fin de partie", message="Voulez vous refaire un partie?"):
             fenetre.destroy()
-            jeu(True)
+            start()
         else:
             fenetre.destroy()
 
@@ -346,5 +400,4 @@ def FinDePartie():
     pass
 
 start()
-
 
