@@ -34,7 +34,7 @@ def jeu(new):
         texte = ""
         for i in liste[0]:
             texte += i
-        label.config(text = texte, font = ("Helvetica",30))
+        label.config(text = texte, font = ("helvetica",30))
 
     def verify(lettre, mots):
         """
@@ -72,6 +72,8 @@ def jeu(new):
             saisie.delete(0, nbr_lettre)
             return
         score += 1
+        msg = "Sore : " + str(score)
+        l_score.config(text = msg)
         for i in range(nbr_lettre):
             if mots[i] != rep[1][i]:
                 saisie.delete(0,len(mots))
@@ -92,6 +94,8 @@ def jeu(new):
         else:
             event.widget.config(bg="red")
         score += 1
+        msg = "Sore : " + str(score)
+        l_score.config(text = msg)
 
 
     def SaveParti():
@@ -110,6 +114,8 @@ def jeu(new):
             if rep[0][i] != rep[1][i]:
                 lettre_indice.append(i)
         score += 1
+        msg = "Sore : " + str(score)
+        l_score.config(text = msg)
         nbr_indice_util += 1
         verify(rep[1][lettre_indice[random.randint(0,len(lettre_indice)-1)]],rep)
 
@@ -130,6 +136,7 @@ def jeu(new):
     bouton_Ok  = tk.Button(fenetre, text="OK", command = ver)
     b_indice = tk.Button(fenetre, text = "indice", command = indice)
     b_Score = tk.Button(fenetre, text="Score", command=Tableau_score)
+    l_score = tk.Label(fenetre, text = "Score : 0")
 
     rec = tk.StringVar
     saisie = tk.Entry(fenetre, textvariable = rec, take = 'focus')
@@ -214,11 +221,12 @@ def jeu(new):
     bouton_z.bind('<Button-1>', ver_lettre)
 
     #   Positionnement
-    label.grid(row = 0, column = 4, columnspan=5)
-    saisie.grid(row = 1, column = 0, columnspan=5)
+    label.grid(row = 0, column = 1, columnspan=6)
+    saisie.grid(row = 1, column = 1, columnspan=6)
     bouton_Ok.grid(row = 1, column = 10)
     b_indice.grid(row=10, column=7)
     b_Score.grid(row=10, column=10)
+    l_score.grid(row = 12, column=20)
 
     #Positionnement lettres
     #Ligne 1
