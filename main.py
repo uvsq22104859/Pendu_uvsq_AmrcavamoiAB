@@ -14,7 +14,7 @@ nbr_erreur = 0
 fenetre = 0
 rep = ""
 
-def jeu(new):
+def jeu():
     """
     fenetre permetent de jouer 
     oú sont definie les autres fonction pour jeu
@@ -60,7 +60,7 @@ def jeu(new):
                 return
         affiche_mot(mots)
         if not in_word:
-            perdu
+            perdu()
         return in_word
 
     def ver():
@@ -81,7 +81,6 @@ def jeu(new):
         for i in range(nbr_lettre):
             if mots[i] != rep[1][i]:
                 saisie.delete(0,len(mots))
-                perdu()
                 return
         if tk.messagebox.showinfo(title="Fin de partie", message="Voulez avez gagner"):
             fenetre.destroy()
@@ -104,10 +103,35 @@ def jeu(new):
     def perdu():
         global max_erreur, nbr_erreur
         nbr_erreur += 1
+        print(max_erreur, nbr_erreur)
+        if (max_erreur - nbr_erreur) <18:            
+            c_pendu.create_line(20, 380, 220,380, width=5)
+        if (max_erreur - nbr_erreur) <16:                    
+            c_pendu.create_line(105,380,105,20, width=5)
+        if (max_erreur - nbr_erreur) <14:                    
+            c_pendu.create_line(105,20,330,20, width=5)
+        if (max_erreur - nbr_erreur) <12:                    
+            c_pendu.create_line(105,80,155,20, width=5)
+        if (max_erreur - nbr_erreur) <10:                    
+            c_pendu.create_line(330,20,330,120, width=5)
+        if (max_erreur - nbr_erreur) <8:                    
+            c_pendu.create_oval(320, 130, 360, 90, width=5, fill="blue", )
+        if (max_erreur - nbr_erreur) <6:                    
+            c_pendu.create_line(330, 120, 260, 220, width=5)
+        if (max_erreur - nbr_erreur) <4:                    
+            c_pendu.create_line(330,120, 310, 220, width = 5)
+        if (max_erreur - nbr_erreur) <4:                    
+            c_pendu.create_line(330,120, 340, 230, width = 5)
+        if (max_erreur - nbr_erreur) <2:                    
+            c_pendu.create_line(260, 220, 270, 320, width=5)
+        if (max_erreur - nbr_erreur) <2:                    
+            c_pendu.create_line(260, 220, 230, 315, width=5)
+        
         if max_erreur == nbr_erreur:
-            if tk.messagebox.askyesno(title="You lose", message="Dommage vous avez perdu \nVouler vous faire une nouvelle partie?"):
+            if tk.messagebox.askyesno(title="You lose", message=f"Le mot etais : {rep[1]}\nDommage vous avez perdu \nVouler vous faire une nouvelle partie?"):
+                nbr_erreur = 0
                 fenetre.destroy()
-                jeu(True)
+                jeu()
             else:
                 fenetre.destroy()
 
@@ -127,29 +151,24 @@ def jeu(new):
         verify(rep[1][lettre_indice[random.randint(0,len(lettre_indice)-1)]],rep)
 
 
-    if(new):
-        score = nbr_indice_util = 0
-        fenetre =  tk.Tk()
-        fenetre.geometry("900x600")
-            #Mots aléatoire
-        with open("src/dictionnaire.txt", "r") as file:
-            bank_mots = file.read().split("\n")
-        for i in range(len(bank_mots)):
-            bank_mots[i] = bank_mots[i].split(";")
-        print(taille_mots)
-        print(bank_mots[taille_mots-1])
-        index = random.randint(0, len(bank_mots[taille_mots-1])-2)
-        rep = def_mot(bank_mots[taille_mots-1][index])
-    else:
-        fenetre =  tk.Tk()
-        fenetre.geometry("900x600")
+    score = nbr_indice_util = nbr_erreur = 0
+    fenetre =  tk.Tk()
+    fenetre.geometry("900x600")
+        #Mots aléatoire
+    with open("src/dictionnaire.txt", "r") as file:
+        bank_mots = file.read().split("\n")
+    for i in range(len(bank_mots)):
+        bank_mots[i] = bank_mots[i].split(";")
+    index = random.randint(0, len(bank_mots[taille_mots-1])-2)
+    rep = def_mot(bank_mots[taille_mots-1][index])
     
      #Widgets
     label = tk.Label(fenetre, font=("Helvetica",30))
     bouton_Ok  = tk.Button(fenetre, text="OK", command = ver)
     b_indice = tk.Button(fenetre, text = "indice", command = indice)
     l_score = tk.Label(fenetre, text = "Score : 0")
-
+    c_pendu = tk.Canvas(fenetre, width=400, height=400, bg="#ffffff")
+    b_close = tk.Button(fenetre, text="Quitter", command=lambda:fenetre.destroy())
     rec = tk.StringVar
     saisie = tk.Entry(fenetre, textvariable = rec, take = 'focus')
 
@@ -233,11 +252,13 @@ def jeu(new):
     bouton_z.bind('<Button-1>', ver_lettre)
 
     #   Positionnement
+    c_pendu.grid(row=1,column=0, rowspan=7)
     label.grid(row = 0, column = 1, columnspan=6)
     saisie.grid(row = 1, column = 1, columnspan=6)
-    bouton_Ok.grid(row = 1, column = 10)
+    bouton_Ok.grid(row = 1, column = 7)
     b_indice.grid(row=10, column=7)
     l_score.grid(row = 12, column=20)
+    b_close.grid(row=13, column=10)
 
     #Positionnement lettres
     #Ligne 1
@@ -278,8 +299,7 @@ def jeu(new):
         Affiche un message pour etre sur que l'utilsateur veut qutter l'application
         """
         if messagebox.askyesno("Essayez de trouver", "Voulez-vous vraiment nous quitter ?"):
-            if messagebox.askyesno(message="Voulez vous vraiment nous quitter ?"):
-                fenetre.destroy()    
+            messagebox.showinfo(message="Vous ne pouvez pas nous quitter.\n\nIl y as un bouton pour cela")    
     
     affiche_mot(rep)
 
@@ -300,9 +320,9 @@ def start():
     def Ok():
         global taille_mots, max_erreur
         taille_mots = variable.get()
-        max_erreur = v_erreur.get()
+        max_erreur = v_erreur.get()*2
         fenetre.destroy()
-        jeu(True)
+        jeu()
     
     def addWord():
         word = s_word.get()
@@ -330,8 +350,9 @@ def start():
     v_erreur.set(erreur[6])
     d_erreur = tk.OptionMenu(fenetre, v_erreur, *erreur)
     l_erreur = tk.Label(fenetre, text="nombre d'echec autorisé")
-    test = tk.Button(text="Start", command=Ok)
-    b_taille = tk.Label(text="taille mots")
+    test = tk.Button(fenetre, text="Start", command=Ok)
+    b_taille = tk.Label(fenetre, text="taille mots")
+    b_score = tk.Button(fenetre,text="score", command=Tableau_score)
     rec = tk.StringVar
     s_word = tk.Entry(fenetre, textvariable=rec)
     b_word = tk.Button(text="ajouter un mot", command=addWord)
@@ -355,6 +376,7 @@ def start():
     l_erreur.grid(row=3, column= 2)
     s_word.grid(row=1, column=10)
     b_word.grid(row=1, column=11)
+    b_score.grid(row=3, column=11)
 
     fenetre.mainloop()
 
@@ -367,8 +389,37 @@ def Tableau_score():
     fenetre.destroy()
     def retour():
         fenetre.destroy()
-        jeu(False)
+        start()
     fenetre = tk.Tk()
+    fenetre.geometry("900x600")
+    list = []
+    with open("src/scores.txt", "r") as file:
+        for line in file:
+            list += line.split(":")
+        print(list)
+    c_empty = tk.Canvas(fenetre, width=400, height=500)
+    label1 = tk.Label(text =(list[0]+"\n"))
+    label2 = tk.Label(text =list[1])
+    label3 = tk.Label(text =(list[2]+"\n"))
+    label4 = tk.Label(text =list[3])
+    label5 = tk.Label(text =(list[4]+"\n"))
+    label6 = tk.Label(text =list[5])
+    label7 = tk.Label(text =(list[6]+"\n"))
+    label8 = tk.Label(text =list[7])
+    label9 = tk.Label(text =(list[8]+"\n"))
+    label10 = tk.Label(text =list[9])
+
+    c_empty.grid(row=0,column=0,rowspan=5)
+    label1.grid(row = 0, column = 1)
+    label2.grid(row = 0, column = 2)
+    label3.grid(row = 1, column = 1)
+    label4.grid(row = 1, column = 2)
+    label5.grid(row = 2, column = 1)
+    label6.grid(row = 2, column = 2)
+    label7.grid(row = 3, column = 1)
+    label8.grid(row = 3, column = 2)
+    label9.grid(row = 4, column = 1)
+    label10.grid(row = 4, column = 2)
     fenetre.protocol("WM_DELETE_WINDOW", retour)
     fenetre.mainloop()
 
