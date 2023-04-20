@@ -294,11 +294,13 @@ def start():
     Fonction qui demare l'application et affiche le menu.
     Renvoi vers la fonction jeu
     """
-    global fenetre, taille_mots
+    global fenetre, taille_mots, max_erreur
     word_size = [3,4,5,6,7,8,9,10,11,12,13,14,15]
+    erreur = [1,2,3,4,5,6,7,8,9]
     def Ok():
-        global taille_mots
+        global taille_mots, max_erreur
         taille_mots = variable.get()
+        max_erreur = v_erreur.get()
         fenetre.destroy()
         jeu(True)
     
@@ -324,15 +326,33 @@ def start():
     variable = tk.IntVar()
     variable.set(word_size[3])
     deroul = tk.OptionMenu(fenetre, variable, *word_size)
-    test = tk.Button(text="OK", command=Ok)
+    v_erreur = tk.IntVar()
+    v_erreur.set(erreur[6])
+    d_erreur = tk.OptionMenu(fenetre, v_erreur, *erreur)
+    l_erreur = tk.Label(fenetre, text="nombre d'echec autorisé")
+    test = tk.Button(text="Start", command=Ok)
     b_taille = tk.Label(text="taille mots")
     rec = tk.StringVar
     s_word = tk.Entry(fenetre, textvariable=rec)
     b_word = tk.Button(text="ajouter un mot", command=addWord)
+    rules = tk.Canvas(fenetre, width=500, height=550, bg="#ffffff")
+    rules.create_text(
+        (250, 25),
+        text = "LE PENDU:",
+        fill = "red"
+    )
+    rules.create_text(
+        (250, 100),
+        text = "Le but du jeu: trouver le mots secret\n avant d'etre pendu, vous serez pendu si vous faites trop d'erreur \n\n\tPour ce faire vous devez appuyer sur les lettres\nCe qui decouvre petit a petit le mot si la lettre et de dans.\nSi la lettre esr dans le mots, la lettre devient verte sinon elle devient rouge",
+        fill = "black"
+    )
 
-    test.grid(row=2, column=2)
+    rules.grid(row=1, column = 3, rowspan= 10, columnspan=5)
+    test.grid(row=11, column=3, columnspan=5)
     deroul.grid(row=1, column=1)
     b_taille.grid(row=1, column=2)
+    d_erreur.grid(row = 3, column=1)
+    l_erreur.grid(row=3, column= 2)
     s_word.grid(row=1, column=10)
     b_word.grid(row=1, column=11)
 
