@@ -88,6 +88,9 @@ def jeu():
         return
     
     def ver_lettre(event):
+        """
+        Verifie si la lettre du bouton est dans le mots secret
+        """
         global score
         if event.widget["bg"] == "green" or event.widget["bg"] == "red":
             return
@@ -101,9 +104,12 @@ def jeu():
         l_score.config(text = msg)
 
     def perdu():
+        """
+        affiche le pendu en fonction du nombre d'erreur autoriser
+        si le nombre d'erreur est atteint propose a l'utilisateur de refaire une partie ou quitte le jeu
+        """
         global max_erreur, nbr_erreur
         nbr_erreur += 1
-        print(max_erreur, nbr_erreur)
         if (max_erreur - nbr_erreur) <18:            
             c_pendu.create_line(20, 380, 220,380, width=5)
         if (max_erreur - nbr_erreur) <16:                    
@@ -325,6 +331,9 @@ def start():
         jeu()
     
     def addWord():
+        """
+        Permet á l'utilisateur de rajouter un mots dans le fichier "src/dictionnaire.txt"
+        """
         word = s_word.get()
         s_word.delete(0,len(word))
         list = []
@@ -339,6 +348,9 @@ def start():
                     if(list[i][j] != ""):
                         file.write(list[i][j]+";")
                 file.write("\n")
+    
+    def quitter():
+        f_start.destroy()
 
 
     f_start = tk.Tk()
@@ -355,7 +367,8 @@ def start():
     b_score = tk.Button(f_start,text="score", command=Tableau_score)
     rec = tk.StringVar
     s_word = tk.Entry(f_start, textvariable=rec)
-    b_word = tk.Button(text="ajouter un mot", command=addWord)
+    b_word = tk.Button(f_start,text="ajouter un mot", command=addWord)
+    b_quitter = tk.Button(f_start, text="QUITTER", command=quitter)
     rules = tk.Canvas(f_start, width=500, height=550, bg="#ffffff")
     rules.create_text(
         (250, 25),
@@ -377,6 +390,7 @@ def start():
     s_word.grid(row=1, column=10)
     b_word.grid(row=1, column=11)
     b_score.grid(row=3, column=11)
+    b_quitter.grid(row=11, column=11)
 
     f_start.mainloop()
 
@@ -396,7 +410,7 @@ def Tableau_score():
     with open("src/scores.txt", "r") as file:
         for line in file:
             list += line.split(":")
-        print(list)
+
     c_empty = tk.Canvas(f_score, width=400, height=500)
     label1 = tk.Label(text =(list[0]+"\n"))
     label2 = tk.Label(text =list[1])
@@ -431,6 +445,7 @@ def FinDePartie():
         name = s_name.get()
         if len(name) == 0:
             tk.messagebox.showinfo(message="vous devez d'abord entrer votre nom")
+            return
         sauvegarder_score(name, score)
 
 
@@ -446,6 +461,8 @@ def FinDePartie():
 
         # Ajouter le score du joueur actuel au dictionnaire des scores
         scores[nom_joueur] = score
+        #trie du dictionnaire dans l'ordre croissant
+        dict(sorted(scores.items()))
 
         # Écrire le dictionnaire mis à jour dans le fichier
         f = open("src/scores.txt", "w")
