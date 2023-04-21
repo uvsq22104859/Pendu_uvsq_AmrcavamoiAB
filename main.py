@@ -155,6 +155,7 @@ def jeu():
         l_score.config(text = msg)
         nbr_indice_util += 1
         verify(rep[1][lettre_indice[random.randint(0,len(lettre_indice)-1)]],rep)
+        b_indice.destroy()
 
 
     score = nbr_indice_util = nbr_erreur = 0
@@ -320,6 +321,30 @@ def start():
     Fonction qui demare l'application et affiche le menu.
     Renvoi vers la fonction jeu
     """
+    def aide(): # C'est une fenetre pour expliquer les regles du jeu
+
+        regles_jeu = tk.Toplevel() # On crée la fenetre pour les regles du jeu
+        regles_jeu.geometry("800x300") # Taille de la fenetre
+        regles_jeu.title("Regles du jeu") # Titre de la fenetre
+        # On commence à partir d'ici a créer nos widjets
+        zone_texte1 = tk.Label (regles_jeu, text = "Le jeu du pendu est un jeu de devinettes où un joueur doit deviner un mot en proposant des lettres. Voici les règles de base du jeu :")
+        zone_texte2= tk.Label (regles_jeu, text = "1. Le joueur doit deviner le mot en proposant des lettres une à une.")
+        zone_texte3 = tk.Label (regles_jeu, text = "2. Si une lettre proposée est dans le mot, elle est révélée dans le mot.")
+        zone_texte4= tk.Label (regles_jeu, text = "3. Si une lettre proposée n'est pas dans le mot, un élément est ajouté au dessin du pendu.")
+        zone_texte5 = tk.Label (regles_jeu, text = "4. Le joueur a un nombre limité de propositions avant que le dessin ne soit complété (10 erreurs sont autorisées).")
+        zone_texte6 = tk.Label (regles_jeu, text = "5. Si le joueur devine le mot avant que le dessin ne soit complété, il gagne. Sinon, il perd.")
+        # On utilise le parametre (sticky="nw") pour le positionnement de nos lignes de texte
+        zone_texte1.grid(sticky="nw")
+        zone_texte2.grid(sticky="nw")
+        zone_texte3.grid(sticky="nw")
+        zone_texte4.grid(sticky="nw")
+        zone_texte5.grid(sticky="nw")
+        zone_texte6.grid(sticky="nw")
+        boutton_compris=tk.Button(regles_jeu, text="J'ai compris", command= regles_jeu.destroy) # On ferme la page d'aide en cliquant sur "jai compris" à l'aide de la fonction ".destroy"
+        boutton_compris.grid(sticky="s")
+
+        regles_jeu.mainloop
+
     global taille_mots, max_erreur
     word_size = [3,4,5,6,7,8,9,10,11,12,13,14,15]
     erreur = [1,2,3,4,5,6,7,8,9]
@@ -355,6 +380,7 @@ def start():
 
     f_start = tk.Tk()
     f_start.geometry("900x600")
+    #widget
     variable = tk.IntVar()
     variable.set(word_size[3])
     deroul = tk.OptionMenu(f_start, variable, *word_size)
@@ -369,6 +395,7 @@ def start():
     s_word = tk.Entry(f_start, textvariable=rec)
     b_word = tk.Button(f_start,text="ajouter un mot", command=addWord)
     b_quitter = tk.Button(f_start, text="QUITTER", command=quitter)
+    b_aide = tk.Button(f_start, text="Aide", command=aide)
     rules = tk.Canvas(f_start, width=500, height=550, bg="#ffffff")
     rules.create_text(
         (250, 25),
@@ -391,6 +418,7 @@ def start():
     b_word.grid(row=1, column=11)
     b_score.grid(row=3, column=11)
     b_quitter.grid(row=11, column=11)
+    b_aide.grid(row=5,column=1)
 
     f_start.mainloop()
 
