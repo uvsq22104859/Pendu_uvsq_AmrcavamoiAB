@@ -174,6 +174,37 @@ while jeu == True:
    
     print(mot)
        
+    # On créé la fonction qui remplacera chaque lettre du mot en "*"
+    def tiret():
+        global mot
+        affichage=[]
+        for i in range(len(mot)):
+            affichage.append('*')
+        return affichage
+
+    # On crée la variables des scores 
+    erreur = 0
+
+
+    def ecrit_les_coords(evt):
+        global erreur
+        pos_x, pos_y = evt.x, evt.y
+        erreur+=1
+        print(pos_x,pos_y)
+    
+
+    # Ici si l'utilisateur devine le mot la fenetre se fermera avec la fonction ".destroy()" sinon le score augmentera de 1 et affichera un trait dans le canvas 
+
+    def deviner_le_mt(mot1):
+        global erreur
+        mot1 = mot1.upper()
+        if mot == mot1:
+            messagebox.showinfo(fenetre,message="Vous avez gagné !")
+            fenetre.destroy()
+        else:
+            erreur+=1
+            creer_lignes(liste_ligne, erreur, canvas_personnage)
+       
        
 
 
