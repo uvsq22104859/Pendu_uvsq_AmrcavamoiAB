@@ -314,14 +314,14 @@ def start():
     Fonction qui demare l'application et affiche le menu.
     Renvoi vers la fonction jeu
     """
-    global fenetre, taille_mots, max_erreur
+    global taille_mots, max_erreur
     word_size = [3,4,5,6,7,8,9,10,11,12,13,14,15]
     erreur = [1,2,3,4,5,6,7,8,9]
     def Ok():
         global taille_mots, max_erreur
         taille_mots = variable.get()
         max_erreur = v_erreur.get()*2
-        fenetre.destroy()
+        f_start.destroy()
         jeu()
     
     def addWord():
@@ -341,22 +341,22 @@ def start():
                 file.write("\n")
 
 
-    fenetre = tk.Tk()
-    fenetre.geometry("900x600")
+    f_start = tk.Tk()
+    f_start.geometry("900x600")
     variable = tk.IntVar()
     variable.set(word_size[3])
-    deroul = tk.OptionMenu(fenetre, variable, *word_size)
+    deroul = tk.OptionMenu(f_start, variable, *word_size)
     v_erreur = tk.IntVar()
     v_erreur.set(erreur[6])
-    d_erreur = tk.OptionMenu(fenetre, v_erreur, *erreur)
-    l_erreur = tk.Label(fenetre, text="nombre d'echec autorisé")
-    test = tk.Button(fenetre, text="Start", command=Ok)
-    b_taille = tk.Label(fenetre, text="taille mots")
-    b_score = tk.Button(fenetre,text="score", command=Tableau_score)
+    d_erreur = tk.OptionMenu(f_start, v_erreur, *erreur)
+    l_erreur = tk.Label(f_start, text="nombre d'echec autorisé")
+    test = tk.Button(f_start, text="Start", command=Ok)
+    b_taille = tk.Label(f_start, text="taille mots")
+    b_score = tk.Button(f_start,text="score", command=Tableau_score)
     rec = tk.StringVar
-    s_word = tk.Entry(fenetre, textvariable=rec)
+    s_word = tk.Entry(f_start, textvariable=rec)
     b_word = tk.Button(text="ajouter un mot", command=addWord)
-    rules = tk.Canvas(fenetre, width=500, height=550, bg="#ffffff")
+    rules = tk.Canvas(f_start, width=500, height=550, bg="#ffffff")
     rules.create_text(
         (250, 25),
         text = "LE PENDU:",
@@ -378,7 +378,7 @@ def start():
     b_word.grid(row=1, column=11)
     b_score.grid(row=3, column=11)
 
-    fenetre.mainloop()
+    f_start.mainloop()
 
 
 def Tableau_score():
@@ -390,14 +390,14 @@ def Tableau_score():
     def retour():
         fenetre.destroy()
         start()
-    fenetre = tk.Tk()
-    fenetre.geometry("900x600")
+    f_score = tk.Tk()
+    f_score.geometry("900x600")
     list = []
     with open("src/scores.txt", "r") as file:
         for line in file:
             list += line.split(":")
         print(list)
-    c_empty = tk.Canvas(fenetre, width=400, height=500)
+    c_empty = tk.Canvas(f_score, width=400, height=500)
     label1 = tk.Label(text =(list[0]+"\n"))
     label2 = tk.Label(text =list[1])
     label3 = tk.Label(text =(list[2]+"\n"))
@@ -420,12 +420,13 @@ def Tableau_score():
     label8.grid(row = 3, column = 2)
     label9.grid(row = 4, column = 1)
     label10.grid(row = 4, column = 2)
-    fenetre.protocol("WM_DELETE_WINDOW", retour)
-    fenetre.mainloop()
+    f_score.protocol("WM_DELETE_WINDOW", retour)
+    f_score.mainloop()
 
 def FinDePartie():
-    global fenetre, score
+    global score
     name = ""
+    fin = tk.Tk()
     def setName():
         name = s_name.get()
         if len(name) == 0:
@@ -452,23 +453,21 @@ def FinDePartie():
             f.write(f"{key}:{value}\n")
         f.close()
         if tk.messagebox.askyesno(title="Fin de partie", message="Voulez vous refaire un partie?"):
-            fenetre.destroy()
+            fin.destroy()
             start()
         else:
-            fenetre.destroy()
+            fin.destroy()
 
-    fenetre = tk.Tk()
-    fenetre.geometry("900x600")
-    l_name = tk.Button(fenetre, text="Nom")
+    fin.geometry("900x600")
+    l_name = tk.Button(fin, text="Nom")
     text = tk.StringVar
-    s_name = tk.Entry(fenetre, textvariable= text, take= "focus")
-    b_enter = tk.Button(fenetre, text = "OK", command=setName)
+    s_name = tk.Entry(fin, textvariable= text, take= "focus")
+    b_enter = tk.Button(fin, text = "OK", command=setName)
 
     s_name.grid(row = 0, column = 0)
     l_name.grid(row=0, column=1)
     b_enter.grid(row=1,column=1)
-
-    pass
+    fin.mainloop()
 
 start()
 
