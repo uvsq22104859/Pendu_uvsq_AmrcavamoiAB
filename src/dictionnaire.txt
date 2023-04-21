@@ -1,9 +1,9 @@
 
 
-non;oui;
-huit;clef;
+non;oui;art;dos;eau;air;bas;sec;the;pou;fee;gel;
+huit;clef;agne;amie;anne;banc;beau;bleu;brun;chat;cher;
 russe;livre;stylo;
-montre;
+montre;ananas;
 tactile;prudent;comique;bonjour;
 sensible;montagne;dyslexie;
 boulevard;ambassade;
