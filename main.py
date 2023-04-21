@@ -11,7 +11,7 @@ nbr_indice_util = 0
 max_erreur = 7
 taille_mots = 6
 nbr_erreur = 0
-fenetre = 0
+fenetre = f_start = 0
 rep = ""
 
 def jeu():
@@ -399,11 +399,9 @@ def Tableau_score():
     """
     Ouvre une fentre avec les score d'afficher
     """
-    global fenetre
-    fenetre.destroy()
+
     def retour():
-        fenetre.destroy()
-        start()
+        f_score.destroy()
     f_score = tk.Tk()
     f_score.geometry("900x600")
     list = []
@@ -412,16 +410,16 @@ def Tableau_score():
             list += line.split(":")
 
     c_empty = tk.Canvas(f_score, width=400, height=500)
-    label1 = tk.Label(text =(list[0]+"\n"))
-    label2 = tk.Label(text =list[1])
-    label3 = tk.Label(text =(list[2]+"\n"))
-    label4 = tk.Label(text =list[3])
-    label5 = tk.Label(text =(list[4]+"\n"))
-    label6 = tk.Label(text =list[5])
-    label7 = tk.Label(text =(list[6]+"\n"))
-    label8 = tk.Label(text =list[7])
-    label9 = tk.Label(text =(list[8]+"\n"))
-    label10 = tk.Label(text =list[9])
+    label1 = tk.Label(f_score, text =(list[0]+"\n"))
+    label2 = tk.Label(f_score, text =list[1])
+    label3 = tk.Label(f_score, text =(list[2]+"\n"))
+    label4 = tk.Label(f_score, text =list[3])
+    label5 = tk.Label(f_score, text =(list[4]+"\n"))
+    label6 = tk.Label(f_score, text =list[5])
+    label7 = tk.Label(f_score, text =(list[6]+"\n"))
+    label8 = tk.Label(f_score, text =list[7])
+    label9 = tk.Label(f_score, text =(list[8]+"\n"))
+    label10 = tk.Label(f_score, text =list[9])
 
     c_empty.grid(row=0,column=0,rowspan=5)
     label1.grid(row = 0, column = 1)
