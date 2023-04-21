@@ -1,6 +1,6 @@
 # Pendu_uvsq_AmrcavamoiAB
 
-Créateurs Ibrahim, Guillaume CLAIN, Arnaud BOCLE
+Créateurs Ibrahim AMRANE, Guillaume CLAIN, Arnaud BOCLE
 
 Ceci est le projet d'IN200 du pendu
 
