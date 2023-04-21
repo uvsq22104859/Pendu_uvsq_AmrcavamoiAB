@@ -16,3 +16,4 @@ le pendu est totalement afficher vous avez perdu. Pour quitter la fenetre vous d
 
 
 La sauvgarde des scores et les mots sont enregistrer dans le dossier src 
+Il faut importer le dossier "src" et le mettre dans le meme dossier que le programme "main.py"
