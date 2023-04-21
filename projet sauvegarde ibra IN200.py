@@ -87,4 +87,93 @@ Label_1['font'] = font_label
 Label_2 = tk.Label(fenetre_menu, text="Choisis ta difficulté :")
 Label_2['font'] = font_label2
 
+# On configure le scroller de difficulté de 0 à 8 ainsi que les differents boutons 
+
+scroller=tk.Scale(fenetre_menu ,from_=0, to=8, orient="horizontal")
+
+
+bouton_aide= tk.Button(fenetre_menu, text="Aide", command=aide, bg="green")
+bouton_aide['font'] = font_bouton
+bouton_aide.grid(sticky="nw")
+bouton_jouer = tk.Button(fenetre_menu, text="Jouer", command=lambda : je())
+bouton_quitter = tk.Button(fenetre_menu, text="Quitter", command=lambda : je(1))
+bouton_charger = tk.Button(fenetre_menu, text="Charger une partie ", command= charger)
+bouton_jouer['font'] = font_bouton
+bouton_quitter['font'] = font_bouton
+bouton_charger['font'] = font_bouton
+
+Label_1.grid(row = 1, column = 1)
+bouton_jouer.grid(row = 4, column = 1)
+bouton_quitter.grid(row = 5, column = 3)
+bouton_charger.grid(row = 0, column = 3)
+Label_2.grid(row=5, column=0)
+scroller.grid(row=5, column=1)
+
+           
+fenetre_menu.mainloop()
+
+
+# On créé des listes de motes tant que le jeu est lancé
+while jeu == True:
+    MOTS_3_LETTRES = [
+    "art", "dos", "eau", "air", "bas", "sec", "thé", "pou", "fée", "gel",
+    "sel", "axe", "but", "peu", "mur", "nez","riz", "roi", "sel", "uni", "vie", "zoo", "ski", "tas" 
+    ]
+
+
+    MOTS_4_LETTRES = [
+    "agne", "amie", "anne", "banc", "beau", "bleu", "brun", "chat", "cher",
+    "coq", "croc", "doux", "fête", "flou", "froid","gare", "gite", "gris", "ivre", "jean", "lion", "lune", "mais", "ment", "nuit", "page", "pont"
+    ]
+
+
+    MOTS_5_LETTRES = [
+    "abris", "aider", "aimer", "allée", "amour", "arbre", "argent", "assis", "aube", "avant",
+    "blanc", "boule", "bruit", "champ", "chien", "chute", "corps", "douce", "école", "écran",
+    "faire", "fille", "fleur", "goutte", "grain", "habit", "jouer", "laisse", "lettre", "livre"
+    ]
+
+
+    MOTS_6_LETTRES = [
+    "absent", "amical", "ananas", "anonyme", "artichaut", "ascenseur", "attaché", "automne", "ballon",
+    "bataille", "bonheur", "courage", "décorer", "écouter", "épouser", "favori", "glisser", "horizon", "inventer",
+    "jardins", "joueurs", "libre", "lumière", "magasin", "numéro", "object", "parcour", "querell", "rougeur"
+    ]
+
+
+    MOTS_7_LETTRES = [
+    "abandon", "accueil", "affiche", "agréger", "aliments", "biberon", "branche", "capable", "chauffe", "commande",
+    "compter", "conseil", "coupure", "détester", "dormir", "enfants", "ensemble", "expression", "flèches", "gardien",
+    "géograph", "jogging", "lumineux", "marchand", "meubles", "nourritu", "organise", "parcours", "rencontr", "téléphon"
+    ]
+
+    MOTS_8_LETTRES = ["actuelle", "certaine", "chaudron", "défenseur", "épouvant", "français", "galaxie", "historie", "inconnue", "jongleur", "kamikaze", "loups-garous", "merveille", "nutrition", "opposant"]
+
+    MOTS_9_LETTRES = ["alphabet", "banquiers", "carburant", "difficile", "éloquence", "fantasmes", "gymnastique", "habituels", "imaginaire", "jardinage", "kilomètre", "littéraire", "ministère", "nutrition", "observation", "panoramique", "quadriller", "radiateur", "soutenues", "téléphone"]
+    
+    MOTS_10_LETTRES = ["abdominaux", "bienveillance", "chocolatier", "débrouillard", "équilibriste", "fleurissement", "généreusement", "hémisphère", "imperméable", "jonglerie", "kilométrage", "librairies", "méthodiques", "nécessaires", "opportuniste", "photovoltaïque", "quantitatives", "récupérables", "somnambules", "turbulences"]
+    
+    MOTS_11_LETTREETPLUS = ["aménagements", "bouleversant", "contemplatif", "développante", "économiquement", "fascinatrice", "gratuitement", "hétérogène", "inattendues", "justification", "kangourousses", "luminescente", "méticuleuse", "nouvellement", "ostentatoire", "philanthrope", "quintessence", "radiodiffuse", "surveillante", "typographique"]
+
+   
+   
+    liste_liste= [MOTS_3_LETTRES,MOTS_4_LETTRES,MOTS_5_LETTRES,MOTS_6_LETTRES,MOTS_7_LETTRES,MOTS_8_LETTRES,MOTS_9_LETTRES,MOTS_10_LETTRES,MOTS_11_LETTREETPLUS]
+    # On crée une fonction qui charge les mots aléatoirement
+    def choisirliste(liste,entier):
+       return liste[entier]
+   
+   
+    liste = choisirliste(liste_liste, difficulte)
+
+    # Ici si le mot saisi est vrai le "mot" prendra le "mot" choisi dans la variable "mote" sinon il reprendra un mot de la liste
+    if chrge:
+        mot = mote
+    else:
+        mot = mots(liste)
+
+   
+    print(mot)
+       
+       
+
 
