@@ -86,3 +86,5 @@ Label_1 = tk.Label(fenetre_menu, text="Jeu du Pendu", fg = "black")
 Label_1['font'] = font_label
 Label_2 = tk.Label(fenetre_menu, text="Choisis ta difficulté :")
 Label_2['font'] = font_label2
+
+
